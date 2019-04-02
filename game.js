@@ -1,6 +1,6 @@
 let game;
-//var gameOver = false;
-//var uiSceneStarted = false;
+var gameOver = false;
+var uiSceneStarted = false;
 
 // global game options
 let gameOptions = {
@@ -53,7 +53,7 @@ window.onload = function() {
         type: Phaser.WEBGL,
         width: 1334,
         height: 750,
-        scene: [preloadGame, playGame/*,uiScene*/],
+        scene: [preloadGame, playGame,uiScene],
         backgroundColor: 0x0c88c7,
 
         // physics settings
@@ -269,7 +269,16 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on("pointerdown", this.jump, this);
-     
+
+        if (!uiSceneStarted) {
+            this.scene.launch('uiScene')
+        } else {
+            var uiscene = this.scene.manager.getScene('uiScene');
+            console.log(uiscene);
+            uiscene.startButton.setActive(true);
+            uiscene.startButton.setVisible(true);
+        }
+        this.scene.pause();
       }
 
 
@@ -391,7 +400,7 @@ class playGame extends Phaser.Scene{
 
       
 
-       // this.player.x = gameOptions.playerStartPosition;
+    this.player.x = gameOptions.playerStartPosition;
 
         // recycling platforms
         let minDistance = game.config.width;
@@ -459,7 +468,45 @@ class playGame extends Phaser.Scene{
 
 
 
+class uiScene extends Phaser.Scene {
+    constructor() {
+        super('uiScene');
+    }
 
+    preload() {
+
+    }
+
+    create() {
+        // create start button - just text with background
+        this.startButton = this.add.text(game.config.width / 2, game.config.height / 2, 'Start Game', { fontFamily: 'Arial', fontSize: '32px', backgroundColor: '#000', fill: '#FFF' });
+        // set z-index of start button so appears over everything else
+        this.startButton.setDepth(2);
+        this.startButton.x -= this.startButton.width / 2;
+        this.startButton.y -= this.startButton.height / 2;
+        // make start text interactive and listen to pointerdown event
+        this.startButton.setInteractive();
+
+
+        this.startButton.on('pointerdown', function () {
+           this.scene.scene.resume('PlayGame');
+
+          this.setActive(false);
+           this.setVisible(false);
+        })
+
+
+
+        uiSceneStarted = true;
+    }
+
+    update() {
+
+    }
+
+
+
+}
 
 
 
