@@ -1,6 +1,6 @@
 let game;
-var gameOver = false;
-var uiSceneStarted = false;
+//var gameOver = false;
+//var uiSceneStarted = false;
 
 // global game options
 let gameOptions = {
@@ -53,7 +53,7 @@ window.onload = function() {
         type: Phaser.WEBGL,
         width: 1334,
         height: 750,
-        scene: [preloadGame, playGame,uiScene],
+        scene: [preloadGame, playGame/*,uiScene*/],
         backgroundColor: 0x0c88c7,
 
         // physics settings
@@ -144,18 +144,9 @@ class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
     }
-    create(){
+    create() {
 
-        this.pipeTick = 0.0;
-
-        this.pipeline = this.game.renderer.addPipeline('this.shader', new Greyscale(this.game));
-        this.pipeline.setFloat2('uResolution', game.config.width, game.config.height);
-
-        this.input.on('pointerdown', function () {
-            this.player.setPipeline(this.shader);
-            this.cameras.main.setRenderToTexture('this.shader');
-        }, this);
-
+        
 
 
 
@@ -168,7 +159,7 @@ class playGame extends Phaser.Scene{
         this.platformGroup = this.add.group({
 
             // once a platform is removed, it's added to the pool
-            removeCallback: function(platform){
+            removeCallback: function (platform) {
                 platform.scene.platformPool.add(platform)
             }
         });
@@ -177,7 +168,7 @@ class playGame extends Phaser.Scene{
         this.platformPool = this.add.group({
 
             // once a platform is removed from the pool, it's added to the active platforms group
-            removeCallback: function(platform){
+            removeCallback: function (platform) {
                 platform.scene.platformGroup.add(platform)
             }
         });
@@ -186,7 +177,7 @@ class playGame extends Phaser.Scene{
         this.coinGroup = this.add.group({
 
             // once a coin is removed, it's added to the pool
-            removeCallback: function(coin){
+            removeCallback: function (coin) {
                 coin.scene.coinPool.add(coin)
             }
         });
@@ -195,7 +186,7 @@ class playGame extends Phaser.Scene{
         this.coinPool = this.add.group({
 
             // once a coin is removed from the pool, it's added to the active coins group
-            removeCallback: function(coin){
+            removeCallback: function (coin) {
                 coin.scene.coinGroup.add(coin)
             }
         });
@@ -204,7 +195,7 @@ class playGame extends Phaser.Scene{
         this.fireGroup = this.add.group({
 
             // once a firecamp is removed, it's added to the pool
-            removeCallback: function(fire){
+            removeCallback: function (fire) {
                 fire.scene.firePool.add(fire)
             }
         });
@@ -213,7 +204,7 @@ class playGame extends Phaser.Scene{
         this.firePool = this.add.group({
 
             // once a fire is removed from the pool, it's added to the active fire group
-            removeCallback: function(fire){
+            removeCallback: function (fire) {
                 fire.scene.fireGroup.add(fire)
             }
         });
@@ -236,19 +227,19 @@ class playGame extends Phaser.Scene{
         this.player.setDepth(2);
 
         // the player is not dying
-      this.dying = false;
+        this.dying = false;
 
         // setting collisions between the player and the platform group
-        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){
+        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function () {
 
             // play "run" animation if the player is on a platform
-            if(!this.player.anims.isPlaying){
+            if (!this.player.anims.isPlaying) {
                 this.player.anims.play("run");
             }
         }, null, this);
 
         // setting collisions between the player and the coin group
-        this.physics.add.overlap(this.player, this.coinGroup, function(player, coin){
+        this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
 
             this.tweens.add({
                 targets: coin,
@@ -257,7 +248,7 @@ class playGame extends Phaser.Scene{
                 duration: 800,
                 ease: "Cubic.easeOut",
                 callbackScope: this,
-                onComplete: function(){
+                onComplete: function () {
                     this.coinGroup.killAndHide(coin);
                     this.coinGroup.remove(coin);
                 }
@@ -266,9 +257,9 @@ class playGame extends Phaser.Scene{
         }, null, this);
 
         // setting collisions between the player and the fire group
-        this.physics.add.overlap(this.player, this.fireGroup, function(player, fire){
-        
-           this.dying = true;
+        this.physics.add.overlap(this.player, this.fireGroup, function (player, fire) {
+
+            this.dying = true;
             this.player.anims.stop();
             this.player.setFrame(2);
             this.player.body.setVelocityY(-200);
@@ -278,38 +269,26 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on("pointerdown", this.jump, this);
-        if (!uiSceneStarted) {
-            this.scene.launch('uiScene')
-            
-        } else {
-            var uiscene = this.scene.manager.getScene('uiScene');
-            console.log(uiscene);
-            this.dying = false;
-            uiscene.startButton.setActive(true);
-            uiscene.startButton.setVisible(true);
-        }
-      
+     
+      }
 
-        this.scene.pause();
-        //this.scene.start();
-    }
-    
 
-    // adding mountains
-    addMountains(){
-        let rightmostMountain = this.getRightmostMountain();
-        if(rightmostMountain < game.config.width * 2){
-            let mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), game.config.height + Phaser.Math.Between(0, 100), "mountain");
-            mountain.setOrigin(0.5, 1);
-            mountain.body.setVelocityX(gameOptions.mountainSpeed * -1)
-            this.mountainGroup.add(mountain);
-            if(Phaser.Math.Between(0, 1)){
-                mountain.setDepth(1);
+        // adding mountains
+        addMountains(){
+            let rightmostMountain = this.getRightmostMountain();
+            if (rightmostMountain < game.config.width * 2) {
+                let mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), game.config.height + Phaser.Math.Between(0, 100), "mountain");
+                mountain.setOrigin(0.5, 1);
+                mountain.body.setVelocityX(gameOptions.mountainSpeed * -1)
+                this.mountainGroup.add(mountain);
+                if (Phaser.Math.Between(0, 1)) {
+                    mountain.setDepth(1);
+                }
+                mountain.setFrame(Phaser.Math.Between(0, 3))
+                this.addMountains()
             }
-            mountain.setFrame(Phaser.Math.Between(0, 3))
-            this.addMountains()
         }
-    }
+    
 
     // getting rightmost mountain x position
     getRightmostMountain(){
@@ -470,62 +449,15 @@ class playGame extends Phaser.Scene{
         }
         // game over
         if (this.player.y > game.config.height) {
-            var uiScene = this.scene.get('uiScene')
-
-            this.player.setVelocityY(0);
-            this.playerJumps = 0;
-
-            //this.player.y = gameOptions.playerStartPosition + 180;
-
-            this.scene.restart();
-
-
+            
+            this.scene.start("PlayGame");
         }
+        this.player.x = gameOptions.playerStartPosition;
     }
 };
 
 
 
-
-class uiScene extends Phaser.Scene {
-    constructor() {
-        super('uiScene');
-    }
-
-    preload() {
-
-    }
-
-    create() {
-        // create start button - just text with background
-        this.startButton = this.add.text(game.config.width / 2, game.config.height / 2, 'Start Game', { fontFamily: 'Arial', fontSize: '32px', backgroundColor: '#000', fill: '#FFF' });
-        // set z-index of start button so appears over everything else
-        this.startButton.setDepth(2);
-        this.startButton.x -= this.startButton.width / 2;
-        this.startButton.y -= this.startButton.height / 2;
-        // make start text interactive and listen to pointerdown event
-        this.startButton.setInteractive();
-
-
-        this.startButton.on('pointerdown', function () {
-            this.scene.scene.resume('PlayGame');
-
-            this.setActive(false);
-            this.setVisible(false);
-        })
-
-
-
-        uiSceneStarted = true;
-    }
-
-    update() {
-
-    }
-
-
-
-}
 
 
 
