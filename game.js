@@ -1,7 +1,8 @@
 let game;
 var gameOver = false;
 var uiSceneStarted = false;
-
+var score = 0;
+var scoreText;
 // global game options
 let gameOptions = {
 
@@ -147,7 +148,7 @@ class playGame extends Phaser.Scene{
     create() {
 
         
-
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
 
 
@@ -251,6 +252,8 @@ class playGame extends Phaser.Scene{
                 onComplete: function () {
                     this.coinGroup.killAndHide(coin);
                     this.coinGroup.remove(coin);
+                    score += 10;
+                    scoreText.setText('Score: ' + score);
                 }
             });
 
@@ -507,11 +510,6 @@ class uiScene extends Phaser.Scene {
 
 
 }
-
-
-
-
-
 
 
 
