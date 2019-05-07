@@ -36,6 +36,16 @@ During the week i also spent trying to fix the timer system as the previous one 
 
 }, null, this);
  ```
- I used the example from when we were introduce to phaser 3 since i knew it worked and was simplest to implement into my game  
-![Image of Yaktocat](https://imgur.com/a/nVPh3MK)
+ I used the example from when we were introduce to phaser 3 since i knew it worked and was simplest to implement into my game.
+ 
+ ## Week 2 
+ 
+ During week i mainly spent rewriting alot of my code by spliting alot of  platform,fire, and coin animations into a preload class to help smooth out loading and adding a pause of start feature to add a start button which was mentioned in my iteration 1 testing  phase.
+  Once i managed to  sort out my classes i went through and added sprites to each element of my game including the player,platfroms,fire,coins and background mountains which the player,coins,mountain and fire have custom animations to make the game look more finished and polished then the original grey boxes in iteration 1.
+  
+  
+  
+The main problem i had during this week was fixing my scoring system  due to the coins adding 50-100 points over the 10 since the player hitbox was colliding while animation was playing this took a few hours to fix by adding ```javascript
+  coin.disableBody(true);
+  ```   
 
