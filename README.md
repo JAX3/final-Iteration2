@@ -49,4 +49,27 @@ The main problem i had during this week was fixing my scoring system  due to the
 ```javascript
   coin.disableBody(true);
   ```   
+  below is the feedback 
+  
+  ## feedBack
+I got a decent amount of feedback from the people testing.
+* Differant types of obstacles such spikes and walls 
+* music/sound effects
+* speed of the platforms to ramp up as the game goes on.
+
+
+### Test data
+Tester       |  score                        
+------------ | -------------
+Tester 1     | 50,50,30
+Tester 2     | 20,40,10
+Tester 3     | 80,70,60
+Tester 4     | 20,10,60
+Tester 5     | 30,40,10
+ From my test data  i can see the average score is 40  from all of my tester with each of them averaging  around 50 points. But i could improve this by adjusting the probablity  that the coins can spawn  to 30% or higher to make the game easier for players to gain points and with the feedback its mainly small things that could be adjusted and added such and the ramping platform speed as the game goes on or when linked to how many points they have.
+ ```javascript
+  // % of probability a coin appears on the platform
+    coinPercent: 25
+```
+
 
