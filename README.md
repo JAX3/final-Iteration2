@@ -45,7 +45,8 @@ During the week i also spent trying to fix the timer system as the previous one 
   
   
   
-The main problem i had during this week was fixing my scoring system  due to the coins adding 50-100 points over the 10 since the player hitbox was colliding while animation was playing this took a few hours to fix by adding ```javascript
+The main problem i had during this week was fixing my scoring system  due to the coins adding 50-100 points over the 10 since the player hitbox was colliding while animation was playing this took a few hours to fix by setting the coin body to be disabled during the animation frames.
+```javascript
   coin.disableBody(true);
   ```   
 
