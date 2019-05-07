@@ -37,5 +37,5 @@ During the week i also spent trying to fix the timer system as the previous one 
 }, null, this);
  ```
  I used the example from when we were introduce to phaser 3 since i knew it worked and was simplest to implement into my game  
-![score](https://imgur.com/a/nVPh3MK)
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
 
